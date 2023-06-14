@@ -1,0 +1,10 @@
+RewriteEngine On
+
+Rewritecond %{REQUEST_URI} !-f
+Rewritecond %{REQUEST_URI} !-d
+Rewritecond %{REQUEST_URI} !-l
+
+#basta alterar o trecho "$1.php [L]" para mudar o tipo de arquivo a ser afetado. Ex.: "$1.html [L]"
+RewriteRule ^([\w\d-]+)$ $1.php [L]
+
+DirectoryIndex public/index.php

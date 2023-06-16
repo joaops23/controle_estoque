@@ -3,7 +3,7 @@
 namespace Model;
 
 
-class Database {
+class Database extends \PDO{
     public static $instance; 
     private $host;
     private $user;
@@ -21,15 +21,15 @@ class Database {
         $this->database = $database;
     }
 
-    public static function getInstance() {
+    public function getInstance() {
         if(!isset(self::$instance)) {
-            self::$instance = new PDO("mysql:host={$this->host};
+            $this::$instance = new \PDO("mysql:host={$this->host};
             dbname={$this->database}","{$this->user}","{$this->pass}",
-            array(PDO::MYSQL_ATTRINIT_COMMAND => "SET NAMES utf8"));
-            self::$instance->setAttribute(PDO::ATTR_ERRMODE,
-            PDO::ERRMODE_EXCEPTION);
-            self:$instance->setAttribute(PDO::ATTR_ORACLE_NULLS,
-            PDO::NULL_EMPTY_STRING);
+            array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"));
+            $this::$instance->setAttribute(\PDO::ATTR_ERRMODE,
+            \PDO::ERRMODE_EXCEPTION);
+            $this::$instance->setAttribute(\PDO::ATTR_ORACLE_NULLS,
+            \PDO::NULL_EMPTY_STRING);
         }
 
         return self::$instance;
@@ -38,10 +38,50 @@ class Database {
     public static function save($obj)
     {
         global $banco;
+        $pdo = $banco->getInstance();
+
         $contents = $obj->getData();
         $table = $contents['table'];
+        unset($contents['table']);
 
-        $banco->prepare();
+        $columns = self::setParams($contents);
+        $data = self::setDatas($contents);
+
+        $stmt = $pdo->prepare("INSERT INTO $table ($data) VALUES ($columns)");
+        $stmt->execute($contents);
+        
+        if($pdo->lastInsertId()){
+            return $pdo->lastInsertId();
+        } else{
+            throw new \Exception("Excessão encontrada! Não foi possível inserir o produto");
+        }
+
+    }
+
+    # Busca as colunas que serão persistidos
+    public static function setParams($contents)
+    {
+        global $banco;
+        $columns = '';
+        foreach($contents as $index => $val){
+            $columns .= ":" . $index . ",";
+        }
+
+        $len = strlen($columns);
+        return substr($columns, 0, $len-1);
+    }
+
+    # Carrega os dados que serão persistidos
+    public static function setDatas($contents)
+    {
+        global $banco;
+        $data = "";
+        foreach($contents as $index => $val){
+            $data .= $index . ',';
+        }
+
+        $len = strlen($data);
+        return substr($data, 0,$len - 1);
     }
 }
 

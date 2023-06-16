@@ -30,7 +30,7 @@ try{
     $requestUri = $_SERVER['REQUEST_URI'];
     $router = new Router();
     $router->run($requestUri);
-}catch(Exception $e){
-    echo "Excessão encontrada: " . $e->getMessage();
+}catch(\Exception $e){
+    echo "Excessão encontrada: " . $e->getMessage() . "<br>";
 }
 ?>

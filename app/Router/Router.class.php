@@ -14,10 +14,10 @@ class Router extends RouterSwitch
         
         if($route === ''){
             //$this->home();
-            throw new Exception("Teste");
+            throw new \Exception("Teste");
         } else{
             $data = json_decode(file_get_contents('php://input'), true);
-            $this->$route();
+            echo $this->$route();
         }
     }
 }

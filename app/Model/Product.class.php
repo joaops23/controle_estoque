@@ -48,9 +48,9 @@ class Product{
 
         $this::setDesc($prod['prod_desc']);
         $this::setCost($prod['prod_cost']);
-        $this::setMarkup($prod['prod_mkp']);
+        $this::setMarkup($prod['prod_markup']);
 
-        $banco->save($this);
+        return $banco->save($this);
     }
 
     public function getData()
@@ -59,7 +59,7 @@ class Product{
             "table" => $this->table,
             "prod_desc" => $this::getDesc(),
             "prod_cost" => $this::getCost(),
-            "prod_mkp" => $this::getMarkup()
+            "prod_markup" => $this::getMarkup()
         ];
     }
 }

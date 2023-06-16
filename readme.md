@@ -40,7 +40,7 @@
 
 ### Próximos:
 
-- terminar método Database::save()
+- terminar método Database::save() -> Finalizado(método está salvando o registro e retornando id da inclusão)
 - criar demais rotas do produto, estoque e controle
 - finalizar métodos do produto para criação, persistência, manipulação e visualização do produto
 - realizar o mesmo processo para o estoque 

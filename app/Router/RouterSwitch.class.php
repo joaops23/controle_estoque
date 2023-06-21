@@ -3,8 +3,9 @@
 namespace Router;
 use Model\Product;
 
-abstract class RouterSwitch{
-
+abstract class RouterSwitch
+{
+    ## Rotas para o produto
     protected function insertProd()
     {
         global $data;
@@ -18,6 +19,20 @@ abstract class RouterSwitch{
 
         return json_encode($id);
     }
+
+    protected function getProd()
+    {
+        global $data;
+        $prod = new Product();
+        $id = !empty($_GET['id']) ? ['prod_id' => $_GET['id']] : null;
+
+        $list = json_encode($prod->getProds($id));
+
+        return $list;
+        
+    }
+
+    
 }
 
 ?>

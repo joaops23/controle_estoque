@@ -8,7 +8,7 @@ namespace Model;
 class Product{
 
     private $table = "products";
-    public static $prod_id;
+    public static $id;
     protected $prod_desc;
     protected $prod_cost;
     protected $prod_markup;
@@ -27,6 +27,11 @@ class Product{
         $this->prod_markup = round($mkp, 2);
     }
 
+    protected function setId(int $id)
+    {
+        $this->id = trim($id);
+    }
+
     # Getters
     protected function getDesc()
     {
@@ -41,6 +46,16 @@ class Product{
         return $this->prod_markup;
     }
 
+    protected function getId()
+    {
+        return $this->id;
+    }
+
+    public function getTable()
+    {
+        return $this->table;
+    }
+
     # Methods
     public function register(array $prod)
     {
@@ -51,6 +66,17 @@ class Product{
         $this::setMarkup($prod['prod_markup']);
 
         return $banco->save($this);
+    }
+
+    public function getProds(array $id = null)
+    {
+        global $banco;
+        $pdo = $banco->getInstance();
+
+        $list = $banco::consult($this->table, $id);
+
+        return $list;
+        
     }
 
     public function getData()

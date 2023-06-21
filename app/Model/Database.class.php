@@ -58,6 +58,26 @@ class Database extends \PDO{
 
     }
 
+    public static function consult($table, $param = null)
+    {
+        global $banco;
+        $pdo = $banco->getInstance();
+        
+        if($param != null){
+
+            $columns = self::setParams($param);
+            $data = self::setDatas($param);
+            $query = "SELECT * FROM $table WHERE $data = $columns ";
+            $consult = $pdo->prepare($query);
+            $consult->execute($param);
+        } else {
+            $consult = $pdo->prepare("SELECT * FROM $table");
+            $consult->execute();
+        }
+
+        return $consult->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
     # Busca as colunas que serão persistidos
     public static function setParams($contents)
     {

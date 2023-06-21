@@ -36,14 +36,20 @@
 - Conexão com o  banco de dados
 - Arquitetura inicial
 - classes (Database, Product, Router, RouterSwitch, Stock) criadas.
+- método Database::save() -> Finalizado(método está salvando o registro e retornando id da inclusão)
 
 
 ### Próximos:
-
-- terminar método Database::save() -> Finalizado(método está salvando o registro e retornando id da inclusão)
-- criar demais rotas do produto, estoque e controle
+- criar demais rotas do produto, estoque e controle (rotas feitas= /insertProd | /getProd)
 - finalizar métodos do produto para criação, persistência, manipulação e visualização do produto
 - realizar o mesmo processo para o estoque 
 - desenvolver o controle de estoque que irá manipular e popular a tabela stock_balance, controlar o fluxo de entrada-saida dos produtos
 - logs
 - testes
+
+
+### Rotas
+
+- #### Produto
+    - /insertProd (Rota para inserir o produto na base de dados)
+    - /getProd/$id? (Consultar produto, id(Opcional))

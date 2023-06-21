@@ -10,6 +10,8 @@ class Router extends RouterSwitch
     public function run(string $requestUri) {
         global $data;
         $route = substr($requestUri, 1);
+        $pos = strpos($route, "?");
+        $route = substr($route,0,$pos);
 
         
         if($route === ''){

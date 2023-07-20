@@ -1,5 +1,4 @@
 <?php
-
 namespace Router;
 use Model\Product;
 
@@ -25,14 +24,31 @@ abstract class RouterSwitch
         global $data;
         $prod = new Product();
         $id = !empty($_GET['id']) ? ['prod_id' => $_GET['id']] : null;
-
         $list = json_encode($prod->getProds($id));
 
-        return $list;
-        
+        return $list;   
+    }
+    protected function updateProd()
+    {
+        global $data, $_REQUEST;
+        $prod = new Product();
+        $id = !empty($_REQUEST['id']) ? $_REQUEST['id'] : null;
+
+        if(!empty($id)){
+            return $prod->upProd( (int) $id, $data);
+        } else {
+            throw new \Exception('Id do produto não enviado! corrija e tente novamente!');
+        }
     }
 
-    
-}
+    protected function deleteProd()
+    {
+        global $data;
 
+        $prod = new Product();
+        $id = !empty($_GET['id']) ? ['prod_id' => $_GET['id']] : null;
+
+        return $prod->delProd($id);
+    }
+}
 ?>

@@ -56,14 +56,27 @@ class Product{
         return $this->table;
     }
 
+    public function setProd($prod)
+    {
+        # Retorno utilizado na alteração do produto
+        if( !empty($prod['prod_desc']) || !empty($prod['prod_cost']) || !empty($prod['prod_markup'])){
+            $this::setDesc($prod['prod_desc']);
+            $this::setCost($prod['prod_cost']);
+            $this::setMarkup($prod['prod_markup']);
+
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
     # Methods
     public function register(array $prod)
     {
         global $banco;
 
-        $this::setDesc($prod['prod_desc']);
-        $this::setCost($prod['prod_cost']);
-        $this::setMarkup($prod['prod_markup']);
+        $this->setProd($prod);
 
         return $banco->save($this);
     }
@@ -87,6 +100,29 @@ class Product{
             "prod_cost" => $this::getCost(),
             "prod_markup" => $this::getMarkup()
         ];
+    }
+    
+    public function upProd(Int $id = null, $params = array())
+    {
+        global $banco;
+
+        $set = $this->setProd($params);
+
+        if(!$set){
+            return throw new \Exception('Não foram enviados dados para alteração!');
+        }
+
+        return $banco->update($this, ["prod_id" => $id]);
+    }
+
+    public function delProd($params){
+        global $banco;
+
+        if(!empty($params['prod_id'])){
+            return $banco->delete($this->table, $params);
+        } else {
+            return throw new \Exception('Identificação do produto para exclusão não encontrado!');
+        }
     }
 }
 ?>

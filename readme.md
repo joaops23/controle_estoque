@@ -53,3 +53,5 @@
 - #### Produto
     - /insertProd (Rota para inserir o produto na base de dados)
     - /getProd/$id? (Consultar produto, id(Opcional))
+    - /updateProd/$id (enviar em post, no body da requisição, caso queira alterar, os campos: prod_desc, prod_cost, prod_markup)
+    - /deleteProd/$id (Deletar registro de um produto específico) - Ainda não finalizado.

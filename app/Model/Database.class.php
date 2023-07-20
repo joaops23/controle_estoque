@@ -103,6 +103,40 @@ class Database extends \PDO{
         $len = strlen($data);
         return substr($data, 0,$len - 1);
     }
+
+    public static function update($obj, $param = array()) // $param expeteds 1 column, references a $id
+    {
+        global $banco;
+        $pdo = $banco->getInstance();
+
+        $contents = $obj->getData();
+        $table = $contents['table'];
+        unset($contents['table']);
+        #carregar os parâmetros
+        ksort($contents);
+
+        $params = $contents;
+
+        
+        $params[] = $param[key($param)]; // Set a value of id
+        
+        $columns = implode(' = ?, ', array_keys($contents));
+        $columns .= " = ?";
+        
+        $stmt = $pdo->prepare("UPDATE $table SET $columns WHERE ". key($param) ." = ?");
+        $ret = $stmt->execute(array_values($params));
+        
+        return $ret;
+
+    }
+
+    public static function delete($table, $param){
+        #table, param = id do item
+
+
+        return json_encode([$table, $param]);
+        
+    }
 }
 
 ?>

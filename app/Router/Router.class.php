@@ -19,8 +19,19 @@ class Router extends RouterSwitch
             throw new \Exception("Teste");
         } else{
             $data = json_decode(file_get_contents('php://input'), true);
+            $data = empty($data) ? self::bindParams() : $data;
             echo $this->$route();
         }
     }
+    private static function bindParams(){
+        global $_REQUEST;
+
+        $data = array();
+        foreach($_REQUEST as $req => $val){
+            $data[$req] = $val;
+        }
+        return $data;
+    }
+
 }
 ?>
